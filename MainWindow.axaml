@@ -1,0 +1,122 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
+        xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
+        xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        x:Class="WaitAMoment.MainWindow"
+        x:CompileBindings="False"
+        Width="300" Height="500"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+        SystemDecorations="None"
+        Icon="avares://WaitAMoment/Assets/timer-icon.png"
+        Title="Wait a moment"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent">
+
+    <Border CornerRadius="20" ClipToBounds="True">
+        <Border.Background>
+            <SolidColorBrush Color="{DynamicResource SystemRegionColor}"/>
+        </Border.Background>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: ToggleSwitch at top -->
+        <ToggleSwitch Grid.Row="0"
+                      IsChecked="{Binding IsToggleChecked}"
+                      ToolTip.Tip="Switch theme between Light and Dark"
+                      HorizontalAlignment="Right"
+                      Margin="10">
+            <ToggleSwitch.RenderTransform>
+                <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+            </ToggleSwitch.RenderTransform>
+        </ToggleSwitch>
+
+        <!-- Row 1: ProgressBar in center -->
+        <ProgressBar Grid.Row="1"
+                     Theme="{StaticResource ProgressBarCircleOutline}"
+                     Width="296" Height="296"
+                     Value="{Binding ProgressValue}"
+                     Foreground="Gray"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center">
+                <ProgressBar.Styles>
+                    <Style Selector="ProgressBar">
+                        <Setter Property="assist:ProgressBarAssist.CircularInnerContent">
+                            <Setter.Value>
+                                <Template>
+                                    <TextBlock x:CompileBindings="False"
+                                               Text="{Binding DataContext.CenterText, RelativeSource={RelativeSource AncestorType=Window}}"
+                                               TextAlignment="Center"
+                                               FontSize="30"
+                                               FontWeight="Bold"
+                                               Foreground="#5cbcd6"
+                                               VerticalAlignment="Center"/>
+                                </Template>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+                                    <GradientStop Offset="0" Color="#FF5cbcd6" />
+                                    <GradientStop Offset="1" Color="#FF77dbf0" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ProgressBar.Styles>
+            </ProgressBar>
+
+        <!-- Row 2: Time Picker -->
+        <controls:ExtendedTimePicker Grid.Row="2"
+                                     SelectedTime="{Binding SelectedTime}"
+                                     Watermark="mm:ss"
+                                     ClockIdentifier="24HourClock"
+                                     HorizontalAlignment="Center"
+                                     IsEnabled="{Binding IsTimePickerEnabled}"
+                                     Margin="0,10,0,10"/>
+
+        <!-- Row 3: Play/Reset buttons -->
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    Spacing="20"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,10">
+            <Button Click="StartButton_Click" IsEnabled="{Binding IsStartEnabled}" Theme="{StaticResource ButtonIcon}">
+                    <icons:MaterialIcon Kind="Play"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Foreground="DarkGray"
+                                        Width="28"
+                                        Height="28" />
+                </Button>
+                <Button Click="ResetButton_Click" IsEnabled="{Binding IsResetEnabled}" Theme="{StaticResource ButtonIcon}">
+                    <icons:MaterialIcon Kind="Restart"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Foreground="DarkGray"
+                                        Width="28"
+                                        Height="28" />
+                </Button>
+            </StackPanel>
+
+        <!-- Row 4: Exit button -->
+        <Button Grid.Row="4" Content="Exit"
+                Height="30" Width="290"
+                Margin="0,20,0,15"
+                Click="ExitButton_Click"
+                FontSize="16"
+                Foreground="Gray"/>
+    </Grid>
+    </Border>
+</Window>
