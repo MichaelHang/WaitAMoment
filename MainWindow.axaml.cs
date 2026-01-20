@@ -1,8 +1,11 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Threading;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace WaitAMoment;
 
@@ -17,6 +20,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private TimeSpan? _selectedTime = new TimeSpan(10, 0, 0);
     private DispatcherTimer? _timer;
     private int _totalSeconds = 600;
+    private double _bellRotation = 0;
+    private string _bellColor = "DarkGray";
 
     public MainWindow()
     {
@@ -140,6 +145,32 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
     }
 
+    public double BellRotation
+    {
+        get => _bellRotation;
+        set
+        {
+            if (_bellRotation != value)
+            {
+                _bellRotation = value;
+                OnPropertyChanged(nameof(BellRotation));
+            }
+        }
+    }
+
+    public string BellColor
+    {
+        get => _bellColor;
+        set
+        {
+            if (_bellColor != value)
+            {
+                _bellColor = value;
+                OnPropertyChanged(nameof(BellColor));
+            }
+        }
+    }
+
     private void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -165,6 +196,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             IsStartEnabled = true;
             IsResetEnabled = false;
             IsTimePickerEnabled = true;
+            BellColor = "DarkGray";
         }
     }
 
@@ -204,6 +236,31 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         else
         {
             _timer?.Stop();
+            BellColor = "#F06292";
+            TriggerBellShake();
+        }
+    }
+
+    private async void TriggerBellShake()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            await AnimateRotation(0, -15, TimeSpan.FromMilliseconds(125));
+            await AnimateRotation(-15, 15, TimeSpan.FromMilliseconds(250));
+            await AnimateRotation(15, 0, TimeSpan.FromMilliseconds(125));
+        }
+    }
+
+    private async Task AnimateRotation(double from, double to, TimeSpan duration)
+    {
+        var steps = 5;
+        var stepDuration = duration.TotalMilliseconds / steps;
+        var increment = (to - from) / steps;
+
+        for (int i = 0; i <= steps; i++)
+        {
+            BellRotation = from + (increment * i);
+            await Task.Delay((int)stepDuration);
         }
     }
 }
