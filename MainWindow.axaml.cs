@@ -197,6 +197,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             IsResetEnabled = false;
             IsTimePickerEnabled = true;
             BellColor = "DarkGray";
+            Topmost = false;
         }
     }
 
@@ -237,6 +238,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             _timer?.Stop();
             BellColor = "#F06292";
+            Topmost = true;
             TriggerBellShake();
         }
     }

@@ -108,16 +108,16 @@
                                         Foreground="DarkGray"
                                         Width="28"
                                         Height="28" />
-                </Button>
-                <Button Click="ResetButton_Click" IsEnabled="{Binding IsResetEnabled}" Theme="{StaticResource ButtonIcon}">
-                    <icons:MaterialIcon Kind="Restart"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        Foreground="DarkGray"
-                                        Width="28"
-                                        Height="28" />
-                </Button>
-            </StackPanel>
+            </Button>
+            <Button Click="ResetButton_Click" IsEnabled="{Binding IsResetEnabled}" Theme="{StaticResource ButtonIcon}">
+                <icons:MaterialIcon Kind="Restart"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Foreground="DarkGray"
+                                    Width="28"
+                                    Height="28" />
+            </Button>
+        </StackPanel>
 
         <!-- Row 4: Exit button -->
         <Button Grid.Row="4" Content="Exit"
